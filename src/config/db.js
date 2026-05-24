@@ -1,5 +1,4 @@
 const mysql = require('mysql2/promise');
-
 const pool = mysql.createPool({
   host:               process.env.DB_HOST,
   port:               parseInt(process.env.DB_PORT || '3306', 10),
@@ -14,7 +13,6 @@ const pool = mysql.createPool({
     rejectUnauthorized: false
   }
 });
-
 /**
  * Helper query sederhana.
  * Mengembalikan [rows, fields].
@@ -23,7 +21,6 @@ const query = async (sql, params) => {
   const [rows] = await pool.execute(sql, params);
   return rows;
 };
-
 /**
  * Helper transaksi atomic.
  * @param {Function} callback - async (conn) => { ... return result }
@@ -42,5 +39,4 @@ const withTransaction = async (callback) => {
     conn.release();
   }
 };
-
 module.exports = { pool, query, withTransaction };
