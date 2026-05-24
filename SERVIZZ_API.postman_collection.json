@@ -1,0 +1,430 @@
+{
+  "info": {
+    "name": "SERVIZZ API",
+    "description": "Postman Collection untuk SERVIZZ - Aplikasi Layanan Jasa\n\n## Cara Pakai\n1. Import collection ini ke Postman\n2. Buat **Environment** baru dengan variabel:\n   - `base_url` → `http://localhost:3000`\n   - `token_pelanggan` → (otomatis terisi setelah login)\n   - `token_mitra` → (otomatis terisi setelah login)\n   - `token_admin` → (otomatis terisi setelah login)\n3. Jalankan **Login** terlebih dahulu agar token tersimpan otomatis\n4. Variabel `order_id`, `nego_id`, `id_tech` juga terisi otomatis dari response",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    { "key": "base_url",         "value": "http://localhost:3000", "type": "string" },
+    { "key": "token_pelanggan",  "value": "", "type": "string" },
+    { "key": "token_mitra",      "value": "", "type": "string" },
+    { "key": "token_admin",      "value": "", "type": "string" },
+    { "key": "order_id",         "value": "", "type": "string" },
+    { "key": "nego_id",          "value": "", "type": "string" },
+    { "key": "id_tech",          "value": "", "type": "string" }
+  ],
+  "item": [
+
+    {
+      "name": "🔐 Auth",
+      "item": [
+        {
+          "name": "Register - Pelanggan",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "url": { "raw": "{{base_url}}/auth/register", "host": ["{{base_url}}"], "path": ["auth","register"] },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"nama\": \"Budi Santoso\",\n  \"email\": \"budi@example.com\",\n  \"password\": \"password123\",\n  \"no_hp\": \"081234567890\",\n  \"alamat\": \"Jl. Sudirman No. 10, Makassar\",\n  \"role\": \"Pelanggan\"\n}"
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Register - Mitra",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "url": { "raw": "{{base_url}}/auth/register", "host": ["{{base_url}}"], "path": ["auth","register"] },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"nama\": \"Ahmad Teknisi\",\n  \"email\": \"ahmad@example.com\",\n  \"password\": \"password123\",\n  \"no_hp\": \"082345678901\",\n  \"alamat\": \"Jl. Veteran No. 5, Makassar\",\n  \"role\": \"Mitra\"\n}"
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Login - Pelanggan",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "const res = pm.response.json();",
+                  "if (res.token) {",
+                  "  pm.collectionVariables.set('token_pelanggan', res.token);",
+                  "  console.log('Token Pelanggan tersimpan:', res.token);",
+                  "}"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "url": { "raw": "{{base_url}}/auth/login", "host": ["{{base_url}}"], "path": ["auth","login"] },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"budi@example.com\",\n  \"password\": \"password123\"\n}"
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Login - Mitra",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "const res = pm.response.json();",
+                  "if (res.token) {",
+                  "  pm.collectionVariables.set('token_mitra', res.token);",
+                  "  console.log('Token Mitra tersimpan:', res.token);",
+                  "}"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "url": { "raw": "{{base_url}}/auth/login", "host": ["{{base_url}}"], "path": ["auth","login"] },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"ahmad@example.com\",\n  \"password\": \"password123\"\n}"
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Login - Admin",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "const res = pm.response.json();",
+                  "if (res.token) {",
+                  "  pm.collectionVariables.set('token_admin', res.token);",
+                  "  console.log('Token Admin tersimpan:', res.token);",
+                  "}"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "url": { "raw": "{{base_url}}/auth/login", "host": ["{{base_url}}"], "path": ["auth","login"] },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"admin@servizz.com\",\n  \"password\": \"adminpassword\"\n}"
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get My Profile",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Authorization", "value": "Bearer {{token_pelanggan}}" }],
+            "url": { "raw": "{{base_url}}/auth/me", "host": ["{{base_url}}"], "path": ["auth","me"] }
+          },
+          "response": []
+        }
+      ]
+    },
+
+    {
+      "name": "🛠️ Services (Kategori Jasa)",
+      "item": [
+        {
+          "name": "Get All Services",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": { "raw": "{{base_url}}/services", "host": ["{{base_url}}"], "path": ["services"] }
+          },
+          "response": []
+        },
+        {
+          "name": "Create Service [Admin]",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type",  "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{token_admin}}" }
+            ],
+            "url": { "raw": "{{base_url}}/services", "host": ["{{base_url}}"], "path": ["services"] },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"nama_service\": \"Plafon\",\n  \"deskripsi\": \"Pemasangan dan perbaikan plafon rumah\"\n}"
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+
+    {
+      "name": "📦 Orders",
+      "item": [
+        {
+          "name": "Create Order [Pelanggan]",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "const res = pm.response.json();",
+                  "if (res.order_id) {",
+                  "  pm.collectionVariables.set('order_id', res.order_id);",
+                  "  console.log('Order ID tersimpan:', res.order_id);",
+                  "}"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type",  "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{token_pelanggan}}" }
+            ],
+            "url": { "raw": "{{base_url}}/order/create", "host": ["{{base_url}}"], "path": ["order","create"] },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"service_id\": 1,\n  \"lat\": -5.1477,\n  \"long\": 119.4327,\n  \"tgl_kunjungan\": \"2026-05-10 09:00:00\",\n  \"catatan\": \"AC di ruang tamu mati total\"\n}"
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get All My Orders",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Authorization", "value": "Bearer {{token_pelanggan}}" }],
+            "url": { "raw": "{{base_url}}/order", "host": ["{{base_url}}"], "path": ["order"] }
+          },
+          "response": []
+        },
+        {
+          "name": "Get All My Orders [Mitra]",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Authorization", "value": "Bearer {{token_mitra}}" }],
+            "url": { "raw": "{{base_url}}/order", "host": ["{{base_url}}"], "path": ["order"] }
+          },
+          "response": []
+        },
+        {
+          "name": "Get Order By ID",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Authorization", "value": "Bearer {{token_pelanggan}}" }],
+            "url": { "raw": "{{base_url}}/order/{{order_id}}", "host": ["{{base_url}}"], "path": ["order","{{order_id}}"] }
+          },
+          "response": []
+        },
+        {
+          "name": "Assign Technician [Admin]",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              { "key": "Content-Type",  "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{token_admin}}" }
+            ],
+            "url": { "raw": "{{base_url}}/order/{{order_id}}/assign", "host": ["{{base_url}}"], "path": ["order","{{order_id}}","assign"] },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"id_tech\": {{id_tech}}\n}"
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+
+    {
+      "name": "🔒 Negosiasi (Digital Lock)",
+      "item": [
+        {
+          "name": "Create Negotiation [Mitra]",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "const res = pm.response.json();",
+                  "if (res.nego_id) {",
+                  "  pm.collectionVariables.set('nego_id', res.nego_id);",
+                  "  console.log('Nego ID tersimpan:', res.nego_id);",
+                  "}"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type",  "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{token_mitra}}" }
+            ],
+            "url": { "raw": "{{base_url}}/nego/create", "host": ["{{base_url}}"], "path": ["nego","create"] },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"order_id\": {{order_id}},\n  \"deskripsi_kerusakan\": \"Kompresor AC rusak, freon habis\",\n  \"rincian_barang\": \"Freon R32 1kg, filter udara\",\n  \"harga_barang\": 150000,\n  \"biaya_jasa\": 200000\n}"
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Update Price [Mitra]",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              { "key": "Content-Type",  "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{token_mitra}}" }
+            ],
+            "url": { "raw": "{{base_url}}/nego/update-price", "host": ["{{base_url}}"], "path": ["nego","update-price"] },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"order_id\": {{order_id}},\n  \"item_price\": 175000,\n  \"service_fee\": 250000,\n  \"deskripsi_kerusakan\": \"Kompresor AC rusak, freon habis. Perlu penggantian kapasitor.\",\n  \"rincian_barang\": \"Freon R32 1kg, filter udara, kapasitor 25uF\"\n}"
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Approve Negotiation [Pelanggan]",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type",  "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{token_pelanggan}}" }
+            ],
+            "url": { "raw": "{{base_url}}/nego/approve", "host": ["{{base_url}}"], "path": ["nego","approve"] },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"nego_id\": {{nego_id}},\n  \"is_approved\": true\n}"
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Reject Negotiation [Pelanggan]",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type",  "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{token_pelanggan}}" }
+            ],
+            "url": { "raw": "{{base_url}}/nego/approve", "host": ["{{base_url}}"], "path": ["nego","approve"] },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"nego_id\": {{nego_id}},\n  \"is_approved\": false\n}"
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get Negotiation By Order ID",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Authorization", "value": "Bearer {{token_pelanggan}}" }],
+            "url": { "raw": "{{base_url}}/nego/{{order_id}}", "host": ["{{base_url}}"], "path": ["nego","{{order_id}}"] }
+          },
+          "response": []
+        }
+      ]
+    },
+
+    {
+      "name": "💳 Payment",
+      "item": [
+        {
+          "name": "Charge - Biaya Kunjungan [Pelanggan]",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type",  "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{token_pelanggan}}" }
+            ],
+            "url": { "raw": "{{base_url}}/payment/charge", "host": ["{{base_url}}"], "path": ["payment","charge"] },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"order_id\": {{order_id}},\n  \"payment_type\": \"gopay\"\n}"
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Payment Callback [Midtrans Webhook]",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "url": { "raw": "{{base_url}}/payment/callback", "host": ["{{base_url}}"], "path": ["payment","callback"] },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"order_id\": \"SERVIZZ-{{order_id}}-1714300000000\",\n  \"status_code\": \"200\",\n  \"gross_amount\": \"50000.00\",\n  \"signature_key\": \"GANTI_DENGAN_SIGNATURE_VALID\",\n  \"transaction_status\": \"settlement\",\n  \"fraud_status\": \"accept\"\n}"
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+
+    {
+      "name": "🖼️ Evidence",
+      "item": [
+        {
+          "name": "Add Evidence [Mitra]",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type",  "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{token_mitra}}" }
+            ],
+            "url": { "raw": "{{base_url}}/evidence", "host": ["{{base_url}}"], "path": ["evidence"] },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"nego_id\": {{nego_id}},\n  \"foto_kerusakan\": \"https://storage.servizz.com/evidence/kerusakan_001.jpg\",\n  \"foto_nota\": \"https://storage.servizz.com/evidence/nota_001.jpg\",\n  \"deskripsi\": \"Foto kondisi kompresor dan struk pembelian freon di toko Jaya AC\"\n}"
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get Evidence By Nego ID",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Authorization", "value": "Bearer {{token_pelanggan}}" }],
+            "url": { "raw": "{{base_url}}/evidence/{{nego_id}}", "host": ["{{base_url}}"], "path": ["evidence","{{nego_id}}"] }
+          },
+          "response": []
+        }
+      ]
+    },
+
+    {
+      "name": "❤️ Health Check",
+      "item": [
+        {
+          "name": "Health Check",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": { "raw": "{{base_url}}/health", "host": ["{{base_url}}"], "path": ["health"] }
+          },
+          "response": []
+        }
+      ]
+    }
+
+  ]
+}
