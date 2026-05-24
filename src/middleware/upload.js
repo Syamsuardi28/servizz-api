@@ -2,8 +2,10 @@ const multer = require('multer');
 const path = require('path');
 const fs = require('fs');
 
-// Ensure upload directory exists
-const uploadDir = path.join(__dirname, '../../public/uploads/avatars');
+// Gunakan /tmp jika berjalan di Vercel, jika tidak gunakan public/uploads
+const baseUploadDir = process.env.VERCEL === '1' || process.env.VERCEL_REGION ? '/tmp/uploads' : path.join(__dirname, '../../public/uploads');
+const uploadDir = path.join(baseUploadDir, 'avatars');
+
 if (!fs.existsSync(uploadDir)) {
   fs.mkdirSync(uploadDir, { recursive: true });
 }

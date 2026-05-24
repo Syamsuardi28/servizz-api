@@ -33,7 +33,8 @@ app.use(express.urlencoded({ extended: false }));
 
 // ── Static Files ────────────────────────────────────────────
 const path = require('path');
-app.use('/uploads', express.static(path.join(__dirname, '../public/uploads')));
+const uploadFolder = process.env.VERCEL === '1' || process.env.VERCEL_REGION ? '/tmp/uploads' : path.join(__dirname, '../public/uploads');
+app.use('/uploads', express.static(uploadFolder));
 
 // ── Health Check ────────────────────────────────────────────
 app.get('/health', (req, res) => {
